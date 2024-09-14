@@ -56,14 +56,6 @@ def mnist_init(show_dataset =  0):
     testloader=DataLoader(testdf,64,shuffle=True)
     valloader=DataLoader(valdf,64,shuffle=True)
 
-    #tensor_PIL = transforms.ToPILImage()
-    #image = tensor_PIL(test_img)
-    #image.save("test2.png")
-    #plt.figure(figsize=(1,1))
-    #plt.imshow(image,cmap="gray")
-    #plt.show()   
-    
-
     if show_dataset == 1:
         plt.figure(figsize=(10,8))
         for i in range(25):
