@@ -9,16 +9,18 @@ if __name__ == '__main__':
     print("---------------------------------------------")    
     
     if sys.argv[1] == '-h':
-        print('arg : -r(run), -m(view moel)')
+        print('arg : -r(run), -m(view moel) -s(show support model)')
         print("python3 -r [Model] [train :0 , inference :1 ] epoch_count")
     
     if sys.argv[1] == '-m':
         print("1. fashion mnist")
 
+    if sys.argv[1] == '-s':
+        print("mnist Model : mnist ")
+
     if sys.argv[1] == '-r':
-        if sys.argv[2] == '1' : ## mnist model
-            if sys.argv[3] == '0' : ## train    
-                print("----mnist train")            
+        if sys.argv[2] == 'mnist' : ## mnist model
+            if sys.argv[3] == '0' : ## train                    
                 mnist_model(0, int(sys.argv[4]))
     
 

@@ -10,6 +10,8 @@ import numpy as np
 import torch.nn as nn
 import os
 
+dataset_down_path = "/Users/seungsulee/Documents/dataset"
+
 def check_device(str):
     if str == "mac" :
         device="mps" if torch.backends.mps.is_available() else "cpu"
@@ -25,18 +27,15 @@ def mnist_init(show_dataset =  1):
     print("--                         program by odin --")
     print("---------------------------------------------")
 
-    device = check_device("mac")
-
-
-    
+    device = check_device("mac")    
 
     transform=transforms.Compose([
     transforms.ToTensor(),
     transforms.Normalize((0.5,),(0.5,))
     ]) 
 
-    traindf=datasets.FashionMNIST(root="/Users/seungsulee/Documents/dataset",download=True,train=True,transform=transform)
-    testdf=datasets.FashionMNIST(root="/Users/seungsulee/Documents/dataset",download=True,train=False,transform=transform)
+    traindf=datasets.FashionMNIST(root=dataset_down_path,download=True,train=True,transform=transform)
+    testdf=datasets.FashionMNIST(root=dataset_down_path,download=True,train=False,transform=transform)
 
     traindf[0][0].max(),traindf[0][0].min()
 
@@ -54,15 +53,16 @@ def mnist_init(show_dataset =  1):
     testloader=DataLoader(testdf,64,shuffle=True)
     valloader=DataLoader(valdf,64,shuffle=True)
 
-    plt.figure(figsize=(10,8))
-    for i in range(25):
-        plt.subplot(5,5,i+1)
-        plt.imshow(sample[i][0].squeeze(),cmap="gray")
-        plt.title(label_classes[sample[i][1]])
-        plt.axis("off")
+    if show_dataset == 1:
+        plt.figure(figsize=(10,8))
+        for i in range(25):
+            plt.subplot(5,5,i+1)
+            plt.imshow(sample[i][0].squeeze(),cmap="gray")
+            plt.title(label_classes[sample[i][1]])
+            plt.axis("off")
     
-    plt.tight_layout()
-    plt.show()
+        plt.tight_layout()
+        plt.show()
 
     return device , trainloader, testloader , valloader
 
@@ -172,7 +172,7 @@ def set_loss_func(model, device):
 
 def mnist_model_proc(mode , epoch_num = 0):
 
-    device , trainloader, testloader , valloader = mnist_init()
+    device , trainloader, testloader , valloader = mnist_init(show_dataset = 0)
 
     mymodel=Model()
     mymodel.to(device)
@@ -199,7 +199,7 @@ def mnist_model_proc(mode , epoch_num = 0):
               f"and for validation, loss is {avg_loss_test} and accuracy is {avg_acc_test}%.")
         
 
-    torch.save(mymodel,"model_save/mnist_model.pth") 
+        torch.save(mymodel,"model_save/mnist_model.pth") 
 
 
 
