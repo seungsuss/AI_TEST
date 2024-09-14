@@ -104,14 +104,6 @@ def inference(mymodel, image_file_path):
     mymodel.to(device)
     img_tensor.to(device)
 
-    #### input image debug
-    #tensor_PIL = transforms.ToPILImage()
-    #image = tensor_PIL(img_tensor)
-    #image.save("test.png")
-    #plt.figure(figsize=(1,1))
-    #plt.imshow(image,cmap="gray")
-    #plt.show()
-
     mps_tensor = img_tensor.to(device)
 
     pred = mymodel(mps_tensor)
