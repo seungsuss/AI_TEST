@@ -101,6 +101,8 @@ def inference(mymodel, image_file_path):
 
     device , trainloader, testloader , valloader = mnist_init()
 
+
+
     mymodel.to(device)
     img_tensor.to(device)
 
@@ -114,9 +116,18 @@ def inference(mymodel, image_file_path):
     
     return class_names[search_idx]
 
+from torchsummary import summary
+
 def train(model, trainloader, loss_fn, optimizer, metric, device):
     # Initialize a list to store the loss for each batch
     total_loss = []
+
+    model.to('cpu')
+    summary(model , input_size = (1, 28, 28))
+
+    model.to(device)
+
+    
     
     # Set the model to training mode (important for layers like dropout or batch norm)
     model.train()
@@ -132,6 +143,7 @@ def train(model, trainloader, loss_fn, optimizer, metric, device):
         
         # Forward pass: Get model predictions for the current batch of images
         preds = model(images)
+        
         
         # Calculate the loss between the predictions and the actual labels
         loss = loss_fn(preds, labels)
@@ -251,7 +263,7 @@ if __name__ == '__main__':
     mymodel.to('mps')
     tensor_PIL = transforms.ToPILImage()
     image = tensor_PIL(test_tensor)
-    image.save("test1.png")
+    image.save("test3.png")
     plt.figure(figsize=(1,1))
     plt.imshow(image,cmap="gray")
     plt.show()
@@ -277,7 +289,7 @@ if __name__ == '__main__':
         print(f"For epoch {i+1}, the training loss is {avg_loss_train} and accuracy is {avg_acc_train}%, "
               f"and for validation, loss is {avg_loss_test} and accuracy is {avg_acc_test}%.")
         
-
+    print(model_save_path)
     torch.save(mymodel,model_save_path)
     
 
